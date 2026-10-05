@@ -38,7 +38,7 @@
                 </div>
             </div>
 
-            <!-- 長輩年齡 (移除了括號限制，格子內無多餘文字) -->
+            <!-- 長輩年齡 -->
             <div>
                 <label class="block font-medium mb-1">長輩年齡</label>
                 <input type="number" id="elder_age" name="elder_age" required min="0" placeholder="" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-emerald-500 outline-none">
@@ -84,13 +84,19 @@
                 </select>
             </div>
 
-            <!-- 評估後是幾級 -->
+            <!-- 評估後是幾級 (更新選項為 2級~8級 與 不清楚) -->
             <div>
                 <label class="block font-medium mb-1">評估後是幾級</label>
                 <select name="eval_level" required class="w-full border rounded-lg p-2 bg-white focus:ring-2 focus:ring-emerald-500 outline-none">
                     <option value="">請選擇</option>
-                    <option value="2~8級">2~8級</option>
-                    <option value="不確定">不確定</option>
+                    <option value="2級">2級</option>
+                    <option value="3級">3級</option>
+                    <option value="4級">4級</option>
+                    <option value="5級">5級</option>
+                    <option value="6級">6級</option>
+                    <option value="7級">7級</option>
+                    <option value="8級">8級</option>
+                    <option value="不清楚">不清楚</option>
                 </select>
             </div>
 
@@ -123,7 +129,7 @@
         </form>
     </div>
 
-    <!-- 即時檢核與阻擋邏輯 JavaScript (依然會嚴格檢查 65 歲以上與 1966 評估) -->
+    <!-- 即時檢核與阻擋邏輯 JavaScript -->
     <script>
         function validateForm(event) {
             const age = parseInt(document.getElementById('elder_age').value);
