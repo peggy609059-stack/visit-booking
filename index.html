@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>蘆洲集賢社區長照機構 - 參訪預約系統</title>
+    <!-- 引入 Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
@@ -14,161 +15,147 @@
                 <div class="card shadow">
                     <div class="card-header bg-success text-white text-center py-3">
                         <h3>蘆洲集賢社區長照機構</h3>
-                        <p class="mb-0">參訪預約與自我檢核系統</p>
+                        <p class="mb-0">參訪預約與諮詢登記表</p>
                     </div>
                     <div class="card-body p-4">
                         
-                        <!-- 說明文字與規範 -->
-                        <div class="alert alert-warning mb-4">
+                        <!-- 說明文字與注意事項 -->
+                        <div class="alert alert-info mb-4" role="alert">
                             <p class="mb-2">為了讓您更了解我們的環境與服務，並為長輩安排合適的參觀與諮詢時段，請協助填寫以下基本資料。</p>
                             <hr>
-                            <p class="mb-1 fw-bold">為了維護長者健康與安全，參觀時請配合以下事項：</p>
+                            <p class="mb-1 fw-bold text-danger">⚠️ 為了維護長者健康與安全，參觀時請配合以下事項：</p>
                             <ol class="mb-0 ps-3">
-                                <li><b>全程佩戴口罩：</b> 進入本單位請全程佩戴口罩，感謝您的配合。</li>
-                                <li><b>參觀緩衝時間：</b> 為了不打擾長輩們的活動作息，每場參觀的緩衝等候時間約為 10 分鐘，請您見諒並依預約時間準時或稍候。</li>
+                                <li><b>全程佩戴口罩：</b>進入本單位請全程佩戴口罩，感謝您的配合。</li>
+                                <li><b>參觀緩衝時間：</b>為了不打擾長輩們的活動作息，每場參觀的緩衝等候時間約為 10 分鐘，請您見諒並依預約時間準時或稍候。</li>
                             </ol>
                         </div>
 
-                        <!-- 第一階段：自我檢核表 -->
-                        <div id="checkSection">
-                            <h5 class="text-secondary mb-3">步驟一：參訪前健康自我檢核</h5>
+                        <!-- 預約表單 -->
+                        <form id="bookingForm">
                             
-                            <div class="form-check mb-2">
-                                <input class="form-check-input check-item" type="checkbox" id="check1">
-                                <label class="form-check-label" for="check1">
-                                    長輩近期（14天內）無發燒、咳嗽、呼吸道感染或法定傳染病症狀。
-                                </label>
-                            </div>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input check-item" type="checkbox" id="check2">
-                                <label class="form-check-label" for="check2">
-                                    參訪當天出席人員身體狀況良好，且同意配合全程佩戴口罩。
-                                </label>
-                            </div>
-                            <div class="form-check mb-4">
-                                <input class="form-check-input check-item" type="checkbox" id="check3">
-                                <label class="form-check-label" for="check3">
-                                    已了解機構服務時間與 10 分鐘參觀緩衝時間規範。
-                                </label>
-                            </div>
-
-                            <button type="button" id="unlockBtn" class="btn btn-secondary w-100" disabled>
-                                請勾選所有項目以解鎖預約表單
-                            </button>
-                        </div>
-
-                        <!-- 第二階段：預約表單 (預設隱藏) -->
-                        <div id="formSection" style="display: none;" class="mt-4 pt-4 border-top">
-                            <h5 class="text-success mb-3">步驟二：填寫預約與長輩基本資料</h5>
-                            
-                            <form id="bookingForm">
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="elderName" class="form-label">長輩姓名</label>
-                                        <input type="text" class="form-control" id="elderName" required>
+                            <!-- 長輩姓名與性別 -->
+                            <div class="row mb-3">
+                                <div class="col-md-8">
+                                    <label for="elderName" class="form-label">長輩姓名</label>
+                                    <input type="text" class="form-control" id="elderName" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label d-block">長輩性別</label>
+                                    <div class="form-check form-check-inline mt-2">
+                                        <input class="form-check-input" type="radio" name="elderGender" id="genderM" value="男" checked required>
+                                        <label class="form-check-label" for="genderM">男</label>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label d-block">長輩性別</label>
-                                        <div class="form-check form-check-inline mt-2">
-                                            <input class="form-check-input" type="radio" name="elderGender" id="genderM" value="男" checked>
-                                            <label class="form-check-label" for="genderM">男</label>
+                                    <div class="form-check form-check-inline mt-2">
+                                        <input class="form-check-input" type="radio" name="elderGender" id="genderF" value="女" required>
+                                        <label class="form-check-label" for="genderF">女</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 長輩年齡 (限制 65 歲以上) -->
+                            <div class="mb-3">
+                                <label for="elderAge" class="form-label">長輩年齡 <span class="text-muted small">(限 65 歲以上)</span></label>
+                                <input type="number" class="form-control" id="elderAge" min="65" placeholder="請輸入 65 以上數字" required>
+                                <div class="invalid-feedback">長輩年齡需滿 65 歲（含）以上。</div>
+                            </div>
+
+                            <!-- 家屬姓名與關係 -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="familyName" class="form-label">家屬姓名</label>
+                                    <input type="text" class="form-control" id="familyName" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="familyRelation" class="form-label">與長輩關係</label>
+                                    <select class="form-select" id="familyRelation" required>
+                                        <option value="">請選擇關係</option>
+                                        <option value="本人">本人</option>
+                                        <option value="配偶">配偶</option>
+                                        <option value="子女">子女</option>
+                                        <option value="其他親屬">其他親屬</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- 聯絡電話與電子信箱 -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">聯絡電話</label>
+                                    <input type="tel" class="form-control" id="phone" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">電子信箱 <span class="text-muted small">(接收確認信)</span></label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                            </div>
+
+                            <!-- 參訪人數、日期、時段 -->
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="count" class="form-label">參訪人數</label>
+                                    <input type="number" class="form-control" id="count" min="1" value="1" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="date" class="form-label">預約日期</label>
+                                    <input type="date" class="form-control" id="date" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="timeSlot" class="form-label">預約時段</label>
+                                    <select class="form-select" id="timeSlot" required>
+                                        <option value="">請選擇時段</option>
+                                        <option value="上午場 (10:00 - 10:30)">上午場 (10:00 - 10:30)</option>
+                                        <option value="下午場 (14:00 - 14:30)">下午場 (14:00 - 14:30)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- 1966 評估相關 -->
+                            <div class="row mb-3 border-top pt-3">
+                                <div class="col-md-6 mb-2">
+                                    <label class="form-label">是否有通過 1966 評估？</label>
+                                    <div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="hasEval" id="evalYes" value="是" checked>
+                                            <label class="form-check-label" for="evalYes">是</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="elderGender" id="genderF" value="女">
-                                            <label class="form-check-label" for="genderF">女</label>
+                                            <input class="form-check-input" type="radio" name="hasEval" id="evalNo" value="否">
+                                            <label class="form-check-label" for="evalNo">否</label>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="elderAge" class="form-label">長輩年齡</label>
-                                        <input type="number" class="form-control" id="elderAge" min="50" max="120" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="count" class="form-label">參訪人數</label>
-                                        <input type="number" class="form-control" id="count" min="1" value="1" required>
-                                    </div>
+                                <div class="col-md-6 mb-2">
+                                    <label for="evalLevel" class="form-label">評估後是幾級？</label>
+                                    <select class="form-select" id="evalLevel">
+                                        <option value="第2級">第 2 級</option>
+                                        <option value="第3級">第 3 級</option>
+                                        <option value="第4級">第 4 級</option>
+                                        <option value="第5級">第 5 級</option>
+                                        <option value="第6級">第 6 級</option>
+                                        <option value="第7級">第 7 級</option>
+                                        <option value="第8級">第 8 級</option>
+                                        <option value="不確定" selected>不確定</option>
+                                    </select>
                                 </div>
+                            </div>
 
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="familyName" class="form-label">家屬姓名</label>
-                                        <input type="text" class="form-control" id="familyName" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="relation" class="form-label">與長輩關係</label>
-                                        <select class="form-select" id="relation" required>
-                                            <option value="">請選擇關係</option>
-                                            <option value="本人">本人</option>
-                                            <option value="配偶">配偶</option>
-                                            <option value="子女">子女</option>
-                                            <option value="其他親屬">其他親屬</option>
-                                            <option value="其他">其他</option>
-                                        </select>
-                                    </div>
-                                </div>
+                            <!-- 勾選同意注意事項 -->
+                            <div class="form-check mb-4 bg-light p-3 rounded border">
+                                <input class="form-check-input" type="checkbox" id="agreeCheck" required>
+                                <label class="form-check-label small" for="agreeCheck">
+                                    我已詳閱並同意配合蘆洲集賢社區長照機構之參觀規範（全程佩戴口罩、遵守 10 分鐘緩衝時間，且長輩近期無發燒或法定傳染病症狀）。
+                                </label>
+                            </div>
 
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="phone" class="form-label">聯絡電話</label>
-                                        <input type="tel" class="form-control" id="phone" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="email" class="form-label">電子信箱 (接收確認信)</label>
-                                        <input type="email" class="form-control" id="email" required>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="date" class="form-label">預約日期</label>
-                                        <input type="date" class="form-control" id="date" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="timeSlot" class="form-label">預約時段</label>
-                                        <select class="form-select" id="timeSlot" required>
-                                            <option value="">請選擇時段</option>
-                                            <option value="上午 10:00 ~ 10:30">上午 10:00 ~ 10:30</option>
-                                            <option value="下午 14:00 ~ 14:30">下午 14:00 ~ 14:30</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="eval1966" class="form-label">是否有通過 1966 評估</label>
-                                        <select class="form-select" id="eval1966" required>
-                                            <option value="">請選擇</option>
-                                            <option value="是">是</option>
-                                            <option value="否">否</option>
-                                            <option value="進行中">進行中</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="level1966" class="form-label">評估後是幾級</label>
-                                        <select class="form-select" id="level1966" required>
-                                            <option value="">請選擇級別</option>
-                                            <option value="第2級">第 2 級</option>
-                                            <option value="第3級">第 3 級</option>
-                                            <option value="第4級">第 4 級</option>
-                                            <option value="第5級">第 5 級</option>
-                                            <option value="第6級">第 6 級</option>
-                                            <option value="第7級">第 7 級</option>
-                                            <option value="第8級">第 8 級</option>
-                                            <option value="不確定">不確定</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <button type="submit" id="submitBtn" class="btn btn-success w-100 mt-3">確認送出預約</button>
-                            </form>
-                        </div>
+                            <button type="submit" id="submitBtn" class="btn btn-success w-100 py-2 fs-5">確認送出參訪預約</button>
+                        </form>
 
                         <!-- 成功提示訊息 -->
-                        <div id="successMsg" style="display: none;" class="alert alert-success text-center mt-4">
-                            <h4>🎉 預約成功！</h4>
-                            <p>感謝您的填寫。系統已將確認信發送至您的信箱，蘆洲集賢社區長照機構將期待您的蒞臨。</p>
+                        <div id="successMsg" style="display: none;" class="alert alert-success text-center mt-4 p-4">
+                            <h4 class="alert-heading">🎉 預約申請已成功送出！</h4>
+                            <p>感謝您的填寫，系統已自動發送確認信至您的電子信箱。</p>
+                            <hr>
+                            <p class="mb-0 small text-muted">我們將於收到訊息後盡快與您聯繫，期待您的蒞臨！</p>
                         </div>
 
                     </div>
@@ -177,59 +164,40 @@
         </div>
     </div>
 
-    <!-- JavaScript 互動邏輯 -->
+    <!-- JavaScript 邏輯 -->
     <script>
-        // 自我檢核互動解鎖
-        const checkboxes = document.querySelectorAll('.check-item');
-        const unlockBtn = document.getElementById('unlockBtn');
-        const checkSection = document.getElementById('checkSection');
-        const formSection = document.getElementById('formSection');
-
-        checkboxes.forEach(cb => {
-            cb.addEventListener('change', () => {
-                const allChecked = Array.from(checkboxes).every(i => i.checked);
-                if (allChecked) {
-                    unlockBtn.removeAttribute('disabled');
-                    unlockBtn.className = 'btn btn-success w-100';
-                    unlockBtn.innerText = '檢核通過，點此開始填寫預約表單';
-                    unlockBtn.onclick = () => {
-                        checkSection.style.display = 'none';
-                        formSection.style.display = 'block';
-                    };
-                } else {
-                    unlockBtn.setAttribute('disabled', 'true');
-                    unlockBtn.className = 'btn btn-secondary w-100';
-                    unlockBtn.innerText = '請勾選所有項目以解鎖預約表單';
-                    unlockBtn.onclick = null;
-                }
-            });
-        });
-
-        // 表單送出並串接 Google Apps Script
         const bookingForm = document.getElementById('bookingForm');
         bookingForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
+            // 檢查年齡是否大於等於 65
+            const age = parseInt(document.getElementById('elderAge').value);
+            if (age < 65) {
+                alert('長輩年齡需滿 65 歲（含）以上方可進行預約。');
+                document.getElementById('elderAge').focus();
+                return;
+            }
+
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
-            submitBtn.innerText = '傳送中...';
+            submitBtn.innerText = '資料傳送中...';
 
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbzIOM0wGVm1RJzPVl8s48xxkVF5xnzAKvRS5r8BI0zrMSrctVyk8w035V-BCrcLBrHm/exec'; // 記得換成你的網址
+            // 請將下方網址換成你的 Google Apps Script 網路應用程式網址
+            const scriptURL = '請替換為你的_GAS_Web_App_網址'; 
 
             const formData = {
                 elderName: document.getElementById('elderName').value,
                 elderGender: document.querySelector('input[name="elderGender"]:checked').value,
-                elderAge: document.getElementById('elderAge').value,
+                elderAge: age,
                 familyName: document.getElementById('familyName').value,
-                relation: document.getElementById('relation').value,
+                familyRelation: document.getElementById('familyRelation').value,
                 phone: document.getElementById('phone').value,
                 email: document.getElementById('email').value,
                 count: document.getElementById('count').value,
                 date: document.getElementById('date').value,
                 timeSlot: document.getElementById('timeSlot').value,
-                eval1966: document.getElementById('eval1966').value,
-                level1966: document.getElementById('level1966').value,
-                checkStatus: '已通過防疫與規範檢核'
+                hasEval: document.querySelector('input[name="hasEval"]:checked').value,
+                evalLevel: document.getElementById('evalLevel').value
             };
 
             fetch(scriptURL, {
@@ -239,13 +207,13 @@
                 body: JSON.stringify(formData)
             })
             .then(() => {
-                formSection.style.display = 'none';
+                bookingForm.style.display = 'none';
                 document.getElementById('successMsg').style.display = 'block';
             })
             .catch(error => {
                 alert('送出失敗，請稍後再試或直接來電聯繫機構。');
                 submitBtn.disabled = false;
-                submitBtn.innerText = '確認送出預約';
+                submitBtn.innerText = '確認送出參訪預約';
             });
         });
     </script>
