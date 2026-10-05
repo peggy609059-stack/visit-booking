@@ -20,7 +20,7 @@
             <p>2. <strong>參觀緩衝時間：</strong>為了不打擾長輩們的活動作息，每場參觀的緩衝等候時間約為 10 分鐘，請您見諒並依預約時間準時或稍候。</p>
         </div>
 
-        <!-- 預約表單 (此處串接 Formspree 免費表單接收與自動回覆服務) -->
+        <!-- 預約表單 (請將 action 內的網址替換為你的 Formspree 表單 ID) -->
         <form id="visitForm" action="https://formspree.io/f/你的表單ID" method="POST" class="space-y-4" onsubmit="return validateForm(event)">
             
             <!-- 長輩姓名 -->
@@ -38,10 +38,10 @@
                 </div>
             </div>
 
-            <!-- 長輩年齡 (需65歲以上) -->
+            <!-- 長輩年齡 (移除了括號限制，格子內無多餘文字) -->
             <div>
                 <label class="block font-medium mb-1">長輩年齡</label>
-                <input type="number" id="elder_age" name="elder_age" required min="0" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-emerald-500 outline-none">
+                <input type="number" id="elder_age" name="elder_age" required min="0" placeholder="" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-emerald-500 outline-none">
             </div>
 
             <!-- 家屬姓名 -->
@@ -106,7 +106,7 @@
                 <input type="date" name="visit_date" required class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-emerald-500 outline-none">
             </div>
 
-            <!-- 預約時段 -->
+            <!-- 預約時段 (上午10:00~10:30 / 下午14:00~14:30) -->
             <div>
                 <label class="block font-medium mb-1">預約時段</label>
                 <select name="visit_time" required class="w-full border rounded-lg p-2 bg-white focus:ring-2 focus:ring-emerald-500 outline-none">
@@ -123,7 +123,7 @@
         </form>
     </div>
 
-    <!-- 即時檢核與阻擋邏輯 JavaScript -->
+    <!-- 即時檢核與阻擋邏輯 JavaScript (依然會嚴格檢查 65 歲以上與 1966 評估) -->
     <script>
         function validateForm(event) {
             const age = parseInt(document.getElementById('elder_age').value);
