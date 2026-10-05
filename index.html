@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日照中心參訪預約系統</title>
+    <!-- 引入 Bootstrap CSS 讓排版更清爽 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white text-center py-3">
+                        <h3>日照中心參訪預約與自我檢核</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        
+                        <!-- 第一階段：自我檢核表 -->
+                        <div id="checkSection">
+                            <h5 class="text-secondary mb-3">步驟一：參訪前健康與需求自我檢核</h5>
+                            <p class="text-muted small">為了維護日照長輩的健康安全，請家屬先協助確認以下事項：</p>
+                            
+                            <div class="form-check mb-2">
+                                <input class="form-check-input check-item" type="checkbox" id="check1">
+                                <label class="form-check-label" for="check1">
+                                    長輩近期（14天內）無發燒、咳嗽、呼吸道感染或法定傳染病症狀。
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input check-item" type="checkbox" id="check2">
+                                <label class="form-check-label" for="check2">
+                                    參訪當天出席人員身體狀況良好，無身體不適。
+                                </label>
+                            </div>
+                            <div class="form-check mb-4">
+                                <input class="form-check-input check-item" type="checkbox" id="check3">
+                                <label class="form-check-label" for="check3">
+                                    已了解日照中心之服務時間與相關參訪規範。
+                                </label>
+                            </div>
+
+                            <button type="button" id="unlockBtn" class="btn btn-secondary w-100" disabled>
+                                請勾選所有項目以解鎖預約表單
+                            </button>
+                        </div>
+
+                        <!-- 第二階段：預約表單 (預設隱藏) -->
+                        <div id="formSection" style="display: none;" class="mt-4 pt-4 border-top">
+                            <h5 class="text-success mb-3">步驟二：填寫預約資訊</h5>
+                            
+                            <form id="bookingForm">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">家屬姓名</label>
+                                    <input type="text" class="form-control" id="name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">聯絡電話</label>
+                                    <input type="tel" class="form-control" id="phone" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">電子信箱 (接收確認信)</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="count" class="form-label">參訪人數</label>
+                                    <input type="number" class="form-control" id="count" min="1" value="1" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="date" class="form-label">預約日期</label>
+                                    <input type="date" class="form-control" id="date" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="timeSlot" class="form-label">預約時段</label>
+                                    <select class="form-select" id="timeSlot" required>
+                                        <option value="">請選擇時段</option>
+                                        <option value="上午場 (09:30 - 11:00)">上午場 (09:30 - 11:00)</option>
+                                        <option value="下午場 (14:00 - 15:30)">下午場 (14:00 - 15:30)</option>
+                                    </select>
+                                </div>
+                                <button type="submit" id="submitBtn" class="btn btn-success w-100">確認送出預約</button>
+                            </form>
+                        </div>
+
+                        <!-- 成功提示訊息 -->
+                        <div id="successMsg" style="display: none;" class="alert alert-success text-center mt-4">
+                            <h4>🎉 預約成功！</h4>
+                            <p>系統已將確認信發送至您的信箱，我們將盡快與您聯繫。</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript 互動邏輯 -->
+    <script>
+        // 1. 自我檢核互動：全選後解鎖表單
+        const checkboxes = document.querySelectorAll('.check-item');
+        const unlockBtn = document.getElementById('unlockBtn');
+        const checkSection = document.getElementById('checkSection');
+        const formSection = document.getElementById('formSection');
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', () => {
+                const allChecked = Array.from(checkboxes).every(i => i.checked);
+                if (allChecked) {
+                    unlockBtn.removeAttribute('disabled');
+                    unlockBtn.className = 'btn btn-primary w-100';
+                    unlockBtn.innerText = '檢核通過，點此開始填寫預約';
+                    unlockBtn.onclick = () => {
+                        checkSection.style.display = 'none';
+                        formSection.style.display = 'block';
+                    };
+                } else {
+                    unlockBtn.setAttribute('disabled', 'true');
+                    unlockBtn.className = 'btn btn-secondary w-100';
+                    unlockBtn.innerText = '請勾選所有項目以解鎖預約表單';
+                    unlockBtn.onclick = null;
+                }
+            });
+        });
+
+        // 2. 表單送出並串接 Google Apps Script
+        const bookingForm = document.getElementById('bookingForm');
+        bookingForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerText = '傳送中...';
+
+            // 填入你在 Google Apps Script 取得的「網路應用程式網址」
+            const scriptURL = '請替換為你的_GAS_Web_App_網址'; 
+
+            const formData = {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                count: document.getElementById('count').value,
+                date: document.getElementById('date').value,
+                timeSlot: document.getElementById('timeSlot').value,
+                checkStatus: '已通過自我檢核'
+            };
+
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors', // 配合 GAS 跨域設定
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(() => {
+                formSection.style.display = 'none';
+                document.getElementById('successMsg').style.display = 'block';
+            })
+            .catch(error => {
+                alert('送出失敗，請稍後再試或直接來電聯繫。');
+                submitBtn.disabled = false;
+                submitBtn.innerText = '確認送出預約';
+            });
+        });
+    </script>
+</body>
+</html>
